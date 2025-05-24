@@ -2,26 +2,29 @@
   "name": "bfi-service-gateway",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "dist/server.js",
   "scripts": {
-    "dev":"nodemon",
-    "build":"npx tsc",
-    "start": "NODE_ENV=production node dist/app.js"
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0"
-  },
   "devDependencies": {
+    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.2",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.15.21",
     "@types/nodemon": "^3.1.1",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "ts-node": "^10.9.2",
+    "@brace-for-impact/bfi-shared": "latest"
   }
 }
