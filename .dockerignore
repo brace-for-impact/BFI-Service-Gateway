@@ -1,0 +1,36 @@
+# Node modules (reinstall fresh in container)
+node_modules
+
+# Build output
+dist
+build
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env files
+.env
+.env.*
+
+# OS & editor junk
+.DS_Store
+.vscode
+.idea
+
+# Tests & coverage
+coverage
+*.test.ts
+*.spec.ts
+
+# Git stuff
+.git
+.gitignore
+
+# Dependency lockfiles (optional, if you're using Docker layer caching smartly)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Tarballs
+*.tgz
