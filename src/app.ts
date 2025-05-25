@@ -16,23 +16,25 @@ app.use(
   })
 );
 
-app.use(shared.middlewares.requestCounter({config}));
+app.use(shared.middlewares.requestCounterService.requestCounterMiddleware);
 
 
 app.get('/api/health',async (req:Request,res:Response)=>{
-  const [containerInfo, hostMachineInfo, serverInfo] = await Promise.all([
-    shared.services.dockerServices.services?.getContainerInfo(),
-    shared.services.hostServices.getHostInfo(),
-    shared.services.nodeServices.getNodeProcessInfo({requestsPerSecond: config?.requestsPerSecond}),
-  ]);
+  console.log({config: config?.requestsPerSecond})
+  // const [containerInfo, hostMachineInfo, serverInfo] = await Promise.all([
+  //   shared.services.dockerServices.services?.getContainerInfo(),
+  //   shared.services.hostServices.getHostInfo(),
+  //   shared.services.nodeServices.getNodeProcessInfo({requestsPerSecond: config?.requestsPerSecond}),
+  // ]);
   res
     .status(200)
     .json({
       status:"true",
       message:"Gateway server is healthy",
-      containerInfo,
-      hostMachineInfo,
-      serverInfo
+      // containerInfo,
+      // hostMachineInfo,
+      // serverInfo,
+      no: shared.middlewares.requestCounterService.getRequestsPerSecond()
     })
 })
 
