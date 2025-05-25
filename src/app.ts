@@ -6,7 +6,7 @@ const app = express()
 const docker = new Docker({ socketPath: "/var/run/docker.sock" });
 
 app.use(express.json())
-app.use(shared?.middlewares.apiLogger({
+app.use(shared.middlewares.apiLogger({
   logHttpMethod: true,
   logRequestUrl: true,
   logRequestBody: true,
@@ -15,6 +15,7 @@ app.use(shared?.middlewares.apiLogger({
 }))
 
 app.get('/api/health',async (req:Request,res:Response)=>{
+  try {
     res
       .status(200)
       .json({
@@ -22,6 +23,9 @@ app.get('/api/health',async (req:Request,res:Response)=>{
         message:"Auth server is healty",
         data: await shared.services.dockerServices.getContainerServices({docker, networkName: "bfi-infrastructure_bfi-dev-net" })
       })
+  } catch (error) {
+    shared.middlewares.errorHandler(error,req,res)
+  }
 })
 
 export default app;

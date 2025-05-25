@@ -21,7 +21,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@brace-for-impact/bfi-shared": "^1.0.0",
+    "@brace-for-impact/bfi-shared": "latest",
     "dockerode": "^4.0.6",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
