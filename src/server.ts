@@ -11,7 +11,7 @@ const startServer = async () => {
         clientId: config?.clientId,
         groupId: 'group-service-metrics'
     })
-    app.listen(port,()=>console.log(`Auth Service running in ${port}`))
+    app.listen(port,()=>console.log(`Gateway Service running in ${port}`))
 }
 
 startServer()

@@ -1,18 +1,20 @@
-import express, { Request, Response } from "express"
-import { apiLogger } from "./middlewares/apiLogger";
-import shared from "@brace-for-impact/bfi-shared"
+import express, { Request, Response } from "express";
+import shared from "@brace-for-impact/bfi-shared";
 import { config } from "./config";
+import expressAsyncHandler from "express-async-handler";
 
 const app = express()
 
-app.use(express.json())
-app.use(apiLogger({
-  logHttpMethod: true,
-  logRequestUrl: true,
-  logRequestBody: true,
-  logResponseTime: true,
-  logStatusCode: true,
-}));
+app.use(express.json());
+app.use(
+  shared.middlewares.apiLogger({
+    logHttpMethod: true,
+    logRequestUrl: true,
+    logRequestBody: true,
+    logResponseTime: true,
+    logStatusCode: true,
+  })
+);
 
 app.use(shared.middlewares.requestCounter({config}));
 
