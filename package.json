@@ -27,6 +27,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "morgan": "^1.10.0",
+    "systeminformation": "^5.27.0",
     "ts-node": "^10.9.2"
   }
 }
