@@ -2,41 +2,58 @@ import express, { Request, Response } from "express";
 import shared from "@brace-for-impact/bfi-shared";
 import { config } from "./config";
 import expressAsyncHandler from "express-async-handler";
+import { setupMiddlewares } from "./middlewares";
+import { publishToKafka, startKafkaServices } from "./kafka/kafka.service";
 
-const app = express()
+const app = express();
 
-app.use(express.json());
-app.use(
-  shared.middlewares.apiLogger({
-    logHttpMethod: true,
-    logRequestUrl: true,
-    logRequestBody: true,
-    logResponseTime: true,
-    logStatusCode: true,
-  })
-);
+setupMiddlewares(app);
+(async () => {
+  try {
+    await startKafkaServices();
+    console.log("Kafka started");
+  } catch (err) {
+    console.error("Failed to start Kafka:", err);
+  }
+})();
 
-app.use(shared.middlewares.requestCounterService.requestCounterMiddleware);
+let intervalId: NodeJS.Timeout | null = null;
 
+app.get(
+  "/api/health",
+  expressAsyncHandler(async(req: Request, res: Response) => {
+    console.log({ config: config?.requestsPerSecond });
 
-app.get('/api/health',async (req:Request,res:Response)=>{
-  console.log({config: config?.requestsPerSecond})
-  // const [containerInfo, hostMachineInfo, serverInfo] = await Promise.all([
-  //   shared.services.dockerServices.services?.getContainerInfo(),
-  //   shared.services.hostServices.getHostInfo(),
-  //   shared.services.nodeServices.getNodeProcessInfo({requestsPerSecond: config?.requestsPerSecond}),
-  // ]);
-  res
-    .status(200)
-    .json({
-      status:"true",
-      message:"Gateway server is healthy",
+    // const [containerInfo, hostMachineInfo, serverInfo] = await Promise.all([
+    //   shared.services.dockerServices.services?.getContainerInfo(),
+    //   shared.services.hostServices.getHostInfo(),
+    //   shared.services.nodeServices.getNodeProcessInfo({requestsPerSecond: config?.requestsPerSecond}),
+    // ]);
+
+    const key = "health status";
+    const value = "Gateway server is healthy";
+
+    await publishToKafka("monitor-events", key, value);
+
+    console.log('running infinite ');
+    if (!intervalId) {
+      console.log("Starting health publishing...");
+      intervalId = setInterval(() => {
+        const data ="Server is healthy";
+        publishToKafka("monitor-events", "health status", data);
+      }, 1000);
+    }
+    
+
+    res.status(200).json({
+      status: "true",
+      message: "Gateway server is healthy",
       // containerInfo,
       // hostMachineInfo,
       // serverInfo,
-      no: shared.middlewares.requestCounterService.getRequestsPerSecond()
-    })
-})
-
+      no: shared.middlewares.requestCounterService.getRequestsPerSecond(),
+    });
+  })
+);
 
 export default app;
