@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brace-for-impact/bfi-shared": "file:../bfi-shared",
+    "@brace-for-impact/bfi-shared": "latest",
     "dockerode": "^4.0.6",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
