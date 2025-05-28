@@ -8,6 +8,7 @@ interface AppConfig {
   clientId: string,
   SERVICE_NAME_KAFKA: string,
   KAFKA_CONTAINER_PORT: number,
+  KAFKA_CONSUMER_GROUP_ID: string
 }
 declare const __dirname: string;
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -16,12 +17,13 @@ dotenv.config({
   path: path.resolve(__dirname, `../${envFile}`),
 });
 
-export const config: AppConfig = {
+export const config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '3000', 10),
   requestsPerSecond: 0,
   ...(process.env ?? {}),
   clientId: process.env.CLIENT_ID ?? "UNKNOWN_CLIENT",
   SERVICE_NAME_KAFKA: process.env.SERVICE_NAME_KAFKA ?? "",
-  KAFKA_CONTAINER_PORT: parseInt(process.env.KAFKA_CONTAINER_PORT ?? '0') 
+  KAFKA_CONTAINER_PORT: parseInt(process.env.KAFKA_CONTAINER_PORT ?? '0'),
+  KAFKA_CONSUMER_GROUP_ID: process.env.KAFKA_CONSUMER_GROUP_ID ?? ""
 };

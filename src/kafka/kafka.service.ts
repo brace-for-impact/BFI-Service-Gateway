@@ -1,11 +1,12 @@
 import shared from "@brace-for-impact/bfi-shared";
+import { config } from "../config";
 let kafkaService: Awaited<ReturnType<typeof shared.services.kafkaServices.getKafkaServices>>;
 
 export const startKafkaServices = async () => {
   kafkaService = await shared.services.kafkaServices.getKafkaServices({
-    clientId: "gateway-service",
-    brokers: [process.env.KAFKA_BROKERS || "bfi-dev-kafka:9092"],
-    groupId: process.env.KAFKA_CONSUMER_GROUP_ID || "gateway-service-group",
+    clientId: config.clientId,
+    brokers: [`${config.SERVICE_NAME_KAFKA}:${config.KAFKA_CONTAINER_PORT}`],
+    groupId: config.KAFKA_CONSUMER_GROUP_ID,
   });
 
   await kafkaService.consume({
