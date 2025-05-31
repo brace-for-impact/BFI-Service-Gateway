@@ -14,6 +14,7 @@ CMD ["npm", "run", "dev"]
 # Builder (for both staging and prod)
 FROM base AS builder
 RUN npm install
+RUN npm run update:bfi          # ✅ First update
 COPY . .
 RUN npm run build
 
@@ -22,8 +23,7 @@ FROM base AS staging
 RUN npm install -g pm2
 ENV NODE_ENV=staging
 COPY package*.json ./
-RUN npm install --omit=dev
-RUN npm run update:bfi
+RUN npm install --omit=dev      # ✅ Then install with updated package.json
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 CMD ["pm2-runtime", "dist/server.js"]
@@ -33,8 +33,7 @@ FROM base AS prod
 RUN npm install -g pm2
 ENV NODE_ENV=production
 COPY package*.json ./
-RUN npm install --omit=dev
-RUN npm run update:bfi
+RUN npm install --omit=dev      # ✅ Then install with updated package.json
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 CMD ["pm2-runtime", "dist/server.js"]
