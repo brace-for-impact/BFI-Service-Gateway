@@ -6,7 +6,7 @@ const port=config.port
 
 const startServer = async () => {
     await shared.services.dockerServices.bootDockerServices()
-    await shared.services.kafkaServices.getKafkaServices({
+    await shared.services.kafkaServices.initKafka({
         brokers: [`${config.SERVICE_NAME_KAFKA}:${config.KAFKA_CONTAINER_PORT}`],
         clientId: config?.clientId,
         groupId: 'group-service-metrics'

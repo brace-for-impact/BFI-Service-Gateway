@@ -6,7 +6,7 @@ COPY package*.json ./
 # Development
 FROM base AS dev
 RUN npm install
-RUN npm install update:bfi
+RUN npm run update:bfi
 COPY . .
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
