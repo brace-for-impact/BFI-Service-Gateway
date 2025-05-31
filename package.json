@@ -7,13 +7,14 @@
     "dev": "nodemon",
     "build": "tsc",
     "staging": "NODE_ENV=staging node dist/server.js",
-    "start": "NODE_ENV=production node dist/server.js"
+    "start": "NODE_ENV=production node dist/server.js",
+    "update:bfi": "npm install @brace-for-impact/bfi-shared@latest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brace-for-impact/bfi-shared": "^1.0.6",
+    "@brace-for-impact/bfi-shared": "^1.0.9",
     "dockerode": "^4.0.6",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
