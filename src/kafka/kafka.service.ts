@@ -1,15 +1,15 @@
 import shared from "@brace-for-impact/bfi-shared";
 import { config } from "../config";
-let kafkaService: Awaited<ReturnType<typeof shared.services.kafkaServices.getKafkaServices>>;
+let kafkaService: Awaited<ReturnType<typeof shared.services.kafkaServices.initKafka>>;
 
 export const startKafkaServices = async () => {
-  kafkaService = await shared.services.kafkaServices.getKafkaServices({
+  await shared.services.kafkaServices.initKafka({
     clientId: config.clientId,
     brokers: [`${config.SERVICE_NAME_KAFKA}:${config.KAFKA_CONTAINER_PORT}`],
     groupId: config.KAFKA_CONSUMER_GROUP_ID,
   });
 
-  await kafkaService.consume({
+  await shared.services.kafkaServices.consume({
     topics: ["gateway-events"],
     onMessage: async ({ topic, message }) => {
       const key = message.key?.toString();
@@ -19,15 +19,12 @@ export const startKafkaServices = async () => {
   });
 
   console.log("✅ Kafka consumer + producer ready.");
-};
+}; 
 
 // Utility to publish messages
 export const publishToKafka = async (topic: string, key: string, value: any) => {
-  if (!kafkaService) {
-    throw new Error("Kafka service not initialized. Did you call startKafkaServices()?");
-  }
 
-  await kafkaService.send({
+  await shared.services.kafkaServices.send({
     topic,
     messages: [{ key, value }],
   });

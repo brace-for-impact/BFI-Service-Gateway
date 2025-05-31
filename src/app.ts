@@ -21,8 +21,10 @@ let intervalId: NodeJS.Timeout | null = null;
 
 app.get(
   "/api/health",
-  expressAsyncHandler(async(req: Request, res: Response) => {
+  expressAsyncHandler(async (req: Request, res: Response) => {
     console.log({ config: config?.requestsPerSecond });
+
+    await shared.services.dockerServices.bootDockerServices();
 
     // const [containerInfo, hostMachineInfo, serverInfo] = await Promise.all([
     //   shared.services.dockerServices.services?.getContainerInfo(),
@@ -35,15 +37,22 @@ app.get(
 
     await publishToKafka("monitor-events", key, value);
 
-    console.log('running infinite ');
+    console.log("running infinite ");
     if (!intervalId) {
       console.log("Starting health publishing...");
       intervalId = setInterval(() => {
-        const data ="Server is healthy";
+        const data = JSON.stringify({
+          healthStatus: "Server is healthy",
+          apiRequestPerSecond:
+            shared.middlewares.requestCounterService.getRequestsPerSecond(),
+          docker_info:
+            shared.services.dockerServices.services?.getContainerServices(
+              {networkName:"bfi-infrastructure_bfi-dev-net"}
+            ),
+        });
         publishToKafka("monitor-events", "health status", data);
       }, 1000);
     }
-    
 
     res.status(200).json({
       status: "true",
@@ -52,6 +61,10 @@ app.get(
       // hostMachineInfo,
       // serverInfo,
       no: shared.middlewares.requestCounterService.getRequestsPerSecond(),
+      docker_info:
+            shared.services.dockerServices.services?.getContainerServices(
+              {networkName:config.NETWORK_NAME}
+            )
     });
   })
 );

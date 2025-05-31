@@ -12,5 +12,6 @@ export const setupMiddlewares = (app: express.Express) => {
       logStatusCode: true,
     })
   );
+  app.use(shared.middlewares.requestCounterService.requestCounterMiddleware)
   app.use(shared.middlewares.errorHandler);
 };

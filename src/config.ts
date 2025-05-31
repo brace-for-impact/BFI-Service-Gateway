@@ -25,5 +25,6 @@ export const config = {
   clientId: process.env.CLIENT_ID ?? "UNKNOWN_CLIENT",
   SERVICE_NAME_KAFKA: process.env.SERVICE_NAME_KAFKA ?? "",
   KAFKA_CONTAINER_PORT: parseInt(process.env.KAFKA_CONTAINER_PORT ?? '0'),
-  KAFKA_CONSUMER_GROUP_ID: process.env.KAFKA_CONSUMER_GROUP_ID ?? ""
+  KAFKA_CONSUMER_GROUP_ID: process.env.KAFKA_CONSUMER_GROUP_ID ?? "",
+  NETWORK_NAME:process.env.NETWORK_NAME??""
 };
