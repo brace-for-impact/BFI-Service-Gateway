@@ -23,6 +23,7 @@ RUN npm install -g pm2
 ENV NODE_ENV=staging
 COPY package*.json ./
 RUN npm install --omit=dev
+RUN npm run update:bfi
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 CMD ["pm2-runtime", "dist/server.js"]
@@ -33,6 +34,7 @@ RUN npm install -g pm2
 ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm install --omit=dev
+RUN npm run update:bfi
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 CMD ["pm2-runtime", "dist/server.js"]
