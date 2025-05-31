@@ -32,5 +32,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/caution/deployments/bfi/bfi-infrastructure
-            docker-compose -f docker-compose.staging.yaml pull bfi-staging-service-gateway
-            docker-compose -f docker-compose.staging.yaml up --build -d bfi-staging-service-gateway
+            docker compose -f docker-compose.staging.yaml pull bfi-staging-service-gateway
+            docker compose -f docker-compose.staging.yaml up --build -d bfi-staging-service-gateway
