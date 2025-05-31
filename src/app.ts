@@ -62,7 +62,7 @@ app.get(
       // serverInfo,
       no: shared.middlewares.requestCounterService.getRequestsPerSecond(),
       docker_info:
-            shared.services.dockerServices.services?.getContainerServices(
+            await shared.services.dockerServices.services?.getContainerServices(
               {networkName:config.NETWORK_NAME}
             )
     });
