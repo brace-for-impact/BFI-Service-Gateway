@@ -11,10 +11,10 @@ interface AppConfig {
   KAFKA_CONSUMER_GROUP_ID: string
 }
 declare const __dirname: string;
-const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+const envFile = `.env.gateway.${process.env.NODE_ENV || 'development'}`;
 
 dotenv.config({
-  path: path.resolve(__dirname, `../${envFile}`),
+  path: path.resolve(__dirname, `../../bfi-infrastructure/service-envs/${envFile}`),
 });
 
 export const config = {
